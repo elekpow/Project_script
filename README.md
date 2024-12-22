@@ -5,6 +5,7 @@
 
 - сокращение длины имени файла
 параметр *max_length=150* определяет длину в 150 символов
+- запись ошибок в файл error.txt
 
 <details>
 <summary> код скрипта: copy.py</summary>
@@ -16,16 +17,26 @@ import sys
 import shutil
 import time
 
+def log_error(message):
+    """Записывает сообщение об ошибке в файл error.txt и выводит на экран."""
+    with open('error.txt', 'a') as error_file:
+        error_file.write(message + '\n')
+    print(message)
+
 def error_on_dir(exc, dest_dir):
-    print('Error when trying to create DIR:', dest_dir)
-    print(exc)
-    print()
+    # print('Error when trying to create DIR:', dest_dir)
+    # print(exc)
+    # print()
+	message = f'Error when trying to create DIR: {dest_dir}\n{exc}\n'
+    log_error(message)
 
 def error_on_file(exc, src_path):
-    print('Error when trying to copy FILE:', src_path)
-    print(exc)
-    print()
-
+    # print('Error when trying to copy FILE:', src_path)
+    # print(exc)
+    # print()
+    message = f'Error when trying to copy FILE: {src_path}\n{exc}\n'
+    log_error(message)
+	
 def shorten_filename(filename, max_length=150):
     """Сокращает имя файла до max_length символов, сохраняя расширение."""
     name, ext = os.path.splitext(filename)
@@ -93,7 +104,6 @@ def copydir(source, dest):
                 continue
 
             try:
-
 
                 error_on_dir(exc, dest_dir)
 
