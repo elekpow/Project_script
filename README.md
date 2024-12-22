@@ -33,6 +33,12 @@ def shorten_filename(filename, max_length=150):
         name = name[:max_length]
     return name + ext
 	
+def shorten_directory_name(dir_name, max_length=150):
+    """Сокращает имя каталога до max_length символов."""
+    if len(dir_name) > max_length:
+        return dir_name[:max_length]  # Обрезаем имя каталога
+    return dir_name	
+	
 def copydir(source, dest):
     """Copy a directory structure overwriting existing files"""
     total_files_copied = 0
@@ -43,6 +49,9 @@ def copydir(source, dest):
     for root, dirs, files in os.walk(source):
         rel_path = root.replace(source, '').lstrip(os.sep)
         dest_dir = os.path.join(dest, rel_path)
+
+        dest_dir = shorten_directory_name(dest_dir)
+
 
         try:
             os.makedirs(dest_dir)
