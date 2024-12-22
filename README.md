@@ -150,6 +150,17 @@ if __name__ == '__main__':
 </details>
 
 
+Прочитать файл list_files.txt и сохранить имена файлов в список.
+
+
+Пример содержимого file_list.txt:
+
+```
+   file1.txt
+   subdir/file2.txt
+   image.png
+```
+
 
 <details>
 <summary> код скрипта: copy_list.py</summary>
