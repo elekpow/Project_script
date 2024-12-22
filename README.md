@@ -271,3 +271,54 @@ if __name__ == '__main__':
 ```
 
 </details>
+
+
+**обработка файла error.txt**
+
+из файла error.txt нужно получить file_list.txt
+
+
+<details>
+<summary> code extract_errors.py</summary>
+
+```python
+import os
+
+# Определяем имена файлов
+input_file = 'error.txt'
+output_file = 'file_list.txt'
+
+# Открываем файл error.txt для чтения
+with open(input_file, 'r') as infile:
+    # Читаем все строки из файла
+    lines = infile.readlines()
+
+# Открываем файл output_text.txt для записи
+with open(output_file, 'w') as outfile:
+    # Инициализируем счетчик строк
+    line_count = 0
+    
+    # Проходим по каждой строке
+    for line in lines:
+        # Проверяем, начинается ли строка с нужного текста
+        if line.startswith('Error when trying to copy FILE: '):
+            # Извлекаем текст после префикса
+            file_path = line[len('Error when trying to copy FILE: '):].strip()
+            # Разбиваем путь на части
+            path_parts = file_path.split(os.sep)
+            # Оборачиваем в одинарные кавычки части, содержащие пробелы
+            quoted_parts = [f"'{part}'" if ' ' in part else part for part in path_parts]
+            # Собираем путь обратно
+            quoted_path = os.sep.join(quoted_parts)
+            # Записываем в output_text.txt
+            outfile.write(quoted_path + '\n')
+            # Увеличиваем счетчик строк
+            line_count += 1
+
+# Выводим количество записанных строк
+print(f'Результаты записаны в {output_file}')
+print(f'Количество обработанных строк: {line_count}')
+
+```
+
+</details>
