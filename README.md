@@ -95,9 +95,8 @@ def copydir(source, dest):
 
             src_path = os.path.join(root, each_file)
             shortened_file_name = shorten_filename(each_file)
-            dest_path = os.path.join(dest_dir, shortened_file_name)
-
-           # dest_path = os.path.join(dest_dir, each_file)
+            # dest_path = os.path.join(dest_dir, shortened_file_name)
+            dest_path = os.path.join(dest_dir, each_file)
 
             if os.path.exists(dest_path):
                # print('File already exists, skipping: {}'.format(dest_path))
@@ -114,9 +113,8 @@ def copydir(source, dest):
 
             src_path = os.path.join(root, each_file)
             shortened_file_name = shorten_filename(each_file)
-            dest_path = os.path.join(dest_dir, shortened_file_name)
-
-           # dest_path = os.path.join(dest_dir, each_file)
+            # dest_path = os.path.join(dest_dir, shortened_file_name)
+           dest_path = os.path.join(dest_dir, each_file)
 
             if os.path.exists(dest_path):
                # print('File already exists, skipping: {}'.format(dest_path))
@@ -154,6 +152,15 @@ if __name__ == '__main__':
 
 
 Прочитать файл list_files.txt и сохранить имена файлов в список.
+
+
+`python copy.py SOURCE DESTINATION file_list.txt`
+
+
+
+• SOURCE — путь к директории-источнику (например, C:path\tosource или /path/to/source).
+• DESTINATION — путь к директории назначения (например, C:path\todestination или /path/to/destination).
+• file_list.txt — имя файла со списком файлов.
 
 
 Пример содержимого file_list.txt:
@@ -211,20 +218,20 @@ def load_file_list(file_path):
         log_error(f"Error reading file list: {e}")
         return []
 
-def copydir(source, dest, file_list):
-    """Копирует указанные файлы из source в dest."""
+def copy_files(dest, file_list):
+    """Копирует указанные файлы в dest."""
     total_files_copied = 0
 
     start_time = time.time()
 
     for each_file in file_list:
-        src_path = os.path.join(source, each_file)
+        src_path = each_file  # Используем путь файла из списка
 
         if not os.path.isfile(src_path):
             log_error(f"File does not exist: {src_path}")
             continue
 
-        rel_path = os.path.dirname(each_file)
+        rel_path = os.path.dirname(src_path)
         dest_dir = os.path.join(dest, shorten_directory_name(rel_path))
 
         try:
@@ -232,7 +239,7 @@ def copydir(source, dest, file_list):
         except OSError as exc:
             error_on_dir(exc, dest_dir)
 
-        shortened_file_name = shorten_filename(os.path.basename(each_file))
+        shortened_file_name = shorten_filename(os.path.basename(src_path))
         dest_path = os.path.join(dest_dir, shortened_file_name)
 
         if os.path.exists(dest_path):
@@ -251,21 +258,19 @@ def copydir(source, dest, file_list):
     minutes = int(elapsed_time // 60)
     seconds = int(elapsed_time % 60)
 
-    print('Total files copied: {}'.format(total_files_copied))
-    print('Time taken for copying: {} minutes and {} seconds'.format(minutes, seconds))
+    # print('Total files copied: {}'.format(total_files_copied))
+    # print('Time taken for copying: {} minutes and {} seconds'.format(minutes, seconds))
 
 if __name__ == '__main__':
     arg = sys.argv
-    if len(arg) != 4:
-        print('USAGE: python copy.py SOURCE DESTINATION LIST_FILE')
+    if len(arg) != 3:
+        print('USAGE: python copy.py DESTINATION LIST_FILE')
     else:
-        source_dir = arg[1]
-        destination_dir = arg[2]
-        list_file_path = arg[3]
+        destination_dir = arg[1]
+        list_file_path = arg[2]
 
         files_to_copy = load_file_list(list_file_path)
-        copydir(source_dir, destination_dir, files_to_copy)
-
+        copy_files(destination_dir, files_to_copy)
 
 
 ```
