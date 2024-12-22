@@ -1,5 +1,7 @@
 *project script*
 
+<details>
+<summary> код скрипта: copy.py</summary>
 
 ```python
 
@@ -117,6 +119,7 @@ if __name__ == '__main__':
         print('USAGE: python copy.py SOURCE DESTINATION')
     else:
         copydir(arg[1], arg[2])
-		
-	
+			
 ```	
+
+</details>
